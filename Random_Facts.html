@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Facts</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 50px;
+            transition: background-color 0.5s ease;
+            background: linear-gradient(130deg, #226ee0, #c3cfe2);
+            color: #333;
+        }
+
+        h1 {
+            color: #4a4a4a;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .btn, .btn_stop {
+            padding: 15px 30px;
+            margin: 10px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 1s ease, transform 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.1);
+        }
+
+        .btn_stop {
+            background-color: #ff4b5c;
+            color: white;
+        }
+
+        .btn_stop:hover {
+            background-color: #ff1c1c;
+            transform: scale(1.1);
+        }
+
+        #jokes {
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.8);
+            display: inline-block;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to the Fun Fact Page!</h1>
+    <button class="btn">Click me</button>
+    <button class="btn_stop">Stop</button>
+    <div>
+        <p id="jokes"></p>
+    </div>
+
+    <script src="jquery-3.7.1.min.js"></script>
+    <script>
+        let data;
+
+        function getRandomGradient() {
+            const colors = [
+                '#ff9a9e', '#fad0c4', '#fad0c4', '#fcb69f',
+                '#ffecd2', '#fcb69f', '#a1c4fd', '#c2e9fb',
+                '#d4fc79', '#96e6a1', '#84fab0', '#8fd3f4'
+            ];
+            const randomIndex = () => Math.floor(Math.random() * colors.length);
+            return `linear-gradient(135deg, ${colors[randomIndex()]}, ${colors[randomIndex()]})`;
+        }
+
+        function fetchFact() {
+            fetch("https://catfact.ninja/fact")
+                .then(response => response.json())
+                .then(json => {
+                    data = json.fact;
+                    $('body').css('background', getRandomGradient());
+                    $('#jokes').text(data);
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+        $('.btn').click(() => {
+            fetchFact();
+        });
+
+        $('.btn_stop').click(() => {
+            $('#jokes').text("");
+            $('body').css('background', 'linear-gradient(135deg, #f5f7fa, #c3cfe2)');
+        });
+    </script>
+</body>
+
+</html>
